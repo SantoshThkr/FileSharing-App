@@ -29,7 +29,7 @@ const Home = () => {
         <MyCarousel />
 
         <Container maxW={"container.xl"} minH={"100vh"} p={'16'}>
-            <Heading textTransform={'uppercase'} w={'fit-content'} py={'2'} borderBottom={'2px solid'}>Services</Heading>
+            <Heading textTransform={'uppercase'} w={'fit-content'} py={'2'} borderBottom={'2px solid'} m={'auto'}>Services</Heading>
         </Container>
     </Box>
   )

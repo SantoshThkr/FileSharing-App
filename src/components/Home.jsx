@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Img, Stack } from '@chakra-ui/react';
+import { Box, Container, Heading, Img, Stack , Text} from '@chakra-ui/react';
 import React from 'react';
 import {Carousel} from 'react-responsive-carousel';
 
@@ -31,7 +31,19 @@ const Home = () => {
         <Container maxW={"container.xl"} minH={"100vh"} p={'16'}>
             <Heading textTransform={'uppercase'} w={'fit-content'} py={'2'} borderBottom={'2px solid'} m={'auto'}>Services</Heading>
 
-        <Stack>
+        <Stack
+        h="full"
+        p={"4"}
+        alignItems={'center'}
+        direction={['column', 'row']}
+        >
+
+            <Img src={img5} h={[40 , 400]} filter={'hue-rotate(-130deg)'} />
+
+            <Text letterSpacing={'widest'} lineHeight={'190%'} p={['2','10']}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit saepe magnam, quas error enim dignissimos mollitia est cupiditate incidunt minima consectetur distinctio dolore optio iure molestias iusto inventore aliquam quibusdam. Officia animi facere, laborum modi ducimus, laboriosam accusamus voluptate omnis eum soluta facilis hic. Vitae corporis iusto accusantium tenetur nobis asperiores reprehenderit labore magni, expedita omnis, quam ducimus adipisci possimus suscipit laudantium sunt! Laudantium quidem repellat consequatur, facere fugit, ab asperiores blanditiis doloremque ex vitae officia et consequuntur iure optio obcaecati. Aperiam ut labore quo nulla dolore et? Doloribus temporibus debitis, vitae unde hic magni rerum modi praesentium laudantium a iste minima! Nesciunt, fuga odio? Deserunt eveniet perspiciatis explicabo aliquid iste possimus nam nisi dignissimos officia voluptate fugiat doloribus rem unde, non odio. Nulla tenetur totam ipsum saepe. A perspiciatis placeat deleniti nostrum, similique autem quia vero amet doloribus, praesentium vitae facere esse ducimus voluptatibus, iure quod distinctio corrupti eaque.
+            </Text>
+
             
         </Stack>
         </Container>

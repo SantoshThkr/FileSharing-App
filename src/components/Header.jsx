@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Drawer,
     DrawerBody,
-    DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
@@ -19,7 +18,7 @@ const Header = () => {
     return (
         <>
 
-            <Button pos={"fixed"} top={"5"} left={"5"} colorScheme={"purple"} borderRadius={"full"} padding="0" w={"10"} h={"10"} onClick={onOpen}>
+            <Button pos={"fixed"} zIndex={'overlay'} top={"5"} left={"5"} colorScheme={"purple"} borderRadius={"full"} padding="0" w={"10"} h={"10"} onClick={onOpen}>
                 <BiMenuAltLeft />
             </Button>
 
@@ -56,7 +55,7 @@ const Header = () => {
                                 </Button>
 
                                 <Button onClick={onClose}>
-                                    <Link to={"/signup onClick={onClose}"}>Log In</Link>
+                                    <Link to={"/signup"}>Signup</Link>
                                 </Button>
                             </HStack>
                         </DrawerBody>

@@ -1,3 +1,4 @@
+import FileUpload from '../components/FileUpload';
 import { useAuth } from '../hooks/useAuth';
 
 function Files() {
@@ -12,6 +13,8 @@ function Files() {
           <button onClick={logout}>Log out</button>
         </div>
       </header>
+
+      <FileUpload />
     </div>
   );
 }

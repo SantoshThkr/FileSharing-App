@@ -5,7 +5,11 @@ import { formatFileSize } from '../utils/formatFileSize';
 
 const ACCEPTED_TYPES = '.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.zip';
 
-function FileUpload() {
+interface FileUploadProps {
+  onUploaded: () => void;
+}
+
+function FileUpload({ onUploaded }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
@@ -34,6 +38,7 @@ function FileUpload() {
       if (inputRef.current) {
         inputRef.current.value = '';
       }
+      onUploaded();
     } catch (err) {
       setError(getErrorMessage(err, 'Upload failed. Please try again.'));
     } finally {

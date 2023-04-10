@@ -2,12 +2,29 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../middleware/errorHandler';
-import { createFile, findUserFile, getFilePath, listFiles } from '../services/fileService';
+import {
+  createFile,
+  findUserFile,
+  getFilePath,
+  listFiles,
+  removeFile,
+} from '../services/fileService';
+
+function toPositiveInt(value: unknown, fallback: number) {
+  const number = parseInt(String(value), 10);
+  return number > 0 ? number : fallback;
+}
 
 export async function getFiles(req: Request, res: Response, next: NextFunction) {
   try {
-    const files = await listFiles(req.userId!);
-    res.json({ success: true, data: { files } });
+    const { search, type } = req.query;
+    const result = await listFiles(req.userId!, {
+      search: typeof search === 'string' ? search.trim() : undefined,
+      type: typeof type === 'string' ? type : undefined,
+      page: toPositiveInt(req.query.page, 1),
+      limit: Math.min(toPositiveInt(req.query.limit, 10), 50),
+    });
+    res.json({ success: true, data: result });
   } catch (err) {
     next(err);
   }
@@ -53,6 +70,16 @@ export async function downloadFile(req: Request, res: Response, next: NextFuncti
         next(err);
       }
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function deleteFile(req: Request, res: Response, next: NextFunction) {
+  try {
+    const file = await findUserFile(req.userId!, req.params.id);
+    await removeFile(file);
+    res.json({ success: true, data: { id: file.id } });
   } catch (err) {
     next(err);
   }

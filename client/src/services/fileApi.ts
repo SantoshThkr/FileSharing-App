@@ -1,8 +1,8 @@
 import api, { ApiResponse } from './api';
-import { UserFile } from '../types/file';
+import { FileListResponse, FileQuery, UserFile } from '../types/file';
 
-export async function getFiles() {
-  const res = await api.get<ApiResponse<{ files: UserFile[] }>>('/files');
+export async function getFiles(query: FileQuery) {
+  const res = await api.get<ApiResponse<FileListResponse>>('/files', { params: query });
   return res.data.data;
 }
 
@@ -29,4 +29,8 @@ export async function downloadFile(file: UserFile) {
   link.download = file.originalName;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+export async function deleteFile(id: string) {
+  await api.delete(`/files/${id}`);
 }

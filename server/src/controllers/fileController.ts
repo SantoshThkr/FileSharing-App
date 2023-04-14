@@ -6,6 +6,7 @@ import {
   createFile,
   findUserFile,
   getFilePath,
+  fileTypes,
   listFiles,
   removeFile,
 } from '../services/fileService';
@@ -17,10 +18,16 @@ function toPositiveInt(value: unknown, fallback: number) {
 
 export async function getFiles(req: Request, res: Response, next: NextFunction) {
   try {
-    const { search, type } = req.query;
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+    const type = typeof req.query.type === 'string' ? req.query.type : '';
+
+    if (type && !Object.hasOwn(fileTypes, type)) {
+      throw new HttpError(400, 'Unknown file type filter');
+    }
+
     const result = await listFiles(req.userId!, {
-      search: typeof search === 'string' ? search.trim() : undefined,
-      type: typeof type === 'string' ? type : undefined,
+      search,
+      type,
       page: toPositiveInt(req.query.page, 1),
       limit: Math.min(toPositiveInt(req.query.limit, 10), 50),
     });

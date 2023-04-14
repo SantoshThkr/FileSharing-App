@@ -15,6 +15,17 @@ api.interceptors.request.use(config => {
   return config;
 });
 
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401 && localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+      window.location.assign('/login');
+    }
+    return Promise.reject(error);
+  }
+);
+
 export function getErrorMessage(error: unknown, fallback = 'Something went wrong') {
   if (axios.isAxiosError(error) && error.response?.data?.message) {
     return error.response.data.message as string;

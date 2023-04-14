@@ -10,7 +10,13 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
   try {
     const token = header.slice('Bearer '.length);
-    const payload = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+    const payload = jwt.verify(token, process.env.JWT_SECRET as string, {
+      algorithms: ['HS256'],
+    });
+    if (typeof payload === 'string' || typeof payload.userId !== 'string') {
+      return next(new HttpError(401, 'Invalid token'));
+    }
+
     req.userId = payload.userId;
     next();
   } catch (err) {

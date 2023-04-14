@@ -14,6 +14,12 @@ function Register() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters.');
+      return;
+    }
+
     setError('');
     setSubmitting(true);
 
@@ -50,8 +56,10 @@ function Register() {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
+            minLength={8}
             required
           />
+          <span className="hint">At least 8 characters</span>
         </label>
 
         <button className="button-primary" type="submit" disabled={submitting}>

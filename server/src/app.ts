@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import authRoutes from './routes/authRoutes';
 import fileRoutes from './routes/fileRoutes';
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler, notFound } from './middleware/errorHandler';
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/files', fileRoutes);
 
+app.use(notFound);
 app.use(errorHandler);
 
 export default app;

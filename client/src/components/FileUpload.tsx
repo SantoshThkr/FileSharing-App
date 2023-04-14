@@ -3,7 +3,19 @@ import { getErrorMessage } from '../services/api';
 import { uploadFile } from '../services/fileApi';
 import { formatFileSize } from '../utils/formatFileSize';
 
-const ACCEPTED_TYPES = '.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.zip';
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg', 'zip'];
+
+function validateFile(file: File) {
+  const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
+  if (!ALLOWED_EXTENSIONS.includes(extension)) {
+    return 'This file type is not supported.';
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return 'File is larger than 10 MB.';
+  }
+  return '';
+}
 
 interface FileUploadProps {
   onUploaded: () => void;
@@ -18,10 +30,17 @@ function FileUpload({ onUploaded }: FileUploadProps) {
   const [success, setSuccess] = useState('');
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    setFile(event.target.files?.[0] ?? null);
-    setProgress(0);
-    setError('');
+    const selected = event.target.files?.[0] ?? null;
+    const validationError = selected ? validateFile(selected) : '';
+
+    setFile(validationError ? null : selected);
+    setError(validationError);
     setSuccess('');
+    setProgress(0);
+
+    if (validationError) {
+      event.target.value = '';
+    }
   }
 
   async function handleUpload() {
@@ -52,7 +71,7 @@ function FileUpload({ onUploaded }: FileUploadProps) {
         <input
           ref={inputRef}
           type="file"
-          accept={ACCEPTED_TYPES}
+          accept={ALLOWED_EXTENSIONS.map(ext => `.${ext}`).join(',')}
           onChange={handleChange}
           disabled={uploading}
           aria-label="Choose file"
